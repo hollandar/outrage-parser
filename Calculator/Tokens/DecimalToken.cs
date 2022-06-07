@@ -1,0 +1,19 @@
+﻿using Parser;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Calculator.Tokens
+{
+    internal class DecimalToken: IToken
+    {
+        public DecimalToken(decimal value)
+        {
+            this.Value = value;
+        }
+
+        public decimal Value { get; set; }
+    }
+}
