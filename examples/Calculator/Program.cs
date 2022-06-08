@@ -15,7 +15,7 @@ while (true)
 
     try
     {
-        var tokenList = CalculatorParser.ParseExpression(expression);
+        var tokenList = CalculatorParser.ParseExpression(expression!);
 
         var tokens = tokenList.ToList();
         var engine = new CalculationEngine(tokens);

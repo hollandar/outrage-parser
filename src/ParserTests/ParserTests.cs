@@ -78,9 +78,9 @@ namespace TestProject1
             var list = ast.Tokens.ToList();
             Assert.AreEqual(3, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(StringValue));
-            Assert.AreEqual("a", (list[0] as StringValue).Value.ToString());
+            Assert.AreEqual("a", ((StringValue)list[0]).Value.ToString());
             Assert.IsInstanceOfType(list[1], typeof(StringValue));
-            Assert.AreEqual("b", (list[1] as StringValue).Value.ToString());
+            Assert.AreEqual("b", ((StringValue)list[1]).Value.ToString());
             Assert.IsInstanceOfType(list[2], typeof(EndOfFile));
         }
 
@@ -94,9 +94,9 @@ namespace TestProject1
 
             var list = ast.Tokens.ToList();
             Assert.AreEqual(4, list.Count);
-            Assert.AreEqual("a", (list[0] as StringValue).Value.ToString());
-            Assert.AreEqual("b", (list[1] as StringValue).Value.ToString());
-            Assert.AreEqual("c", (list[2] as StringValue).Value.ToString());
+            Assert.AreEqual("a", ((StringValue)list[0]).Value.ToString());
+            Assert.AreEqual("b", ((StringValue)list[1]).Value.ToString());
+            Assert.AreEqual("c", ((StringValue)list[2]).Value.ToString());
             Assert.IsInstanceOfType(list[3], typeof(EndOfFile));
         }
 
@@ -112,7 +112,7 @@ namespace TestProject1
             var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Identifier));
-            Assert.AreEqual("identifier", (list[0] as Identifier).Value);
+            Assert.AreEqual("identifier", ((Identifier)list[0]).Value);
         }
 
         [TestMethod]

@@ -28,7 +28,7 @@ namespace Calculator.Calculations
             {
                 if (list[i] is BracketsToken)
                 {
-                    var bracketsToken = list[i] as BracketsToken;
+                    var bracketsToken = (BracketsToken)list[i];
                     decimal bracketsValue = CalculateFromTokens(bracketsToken.Value.ToList());
 
                     list[i] = new DecimalToken(bracketsValue);
@@ -36,7 +36,7 @@ namespace Calculator.Calculations
 
                 if (list[i] is FunctionToken)
                 {
-                    var functionToken = list[i] as FunctionToken;
+                    var functionToken = (FunctionToken)list[i];
                     decimal functionValue = CalculateFromTokens(functionToken.Parameters.ToList());
 
                     decimal result = functionToken.Function switch
