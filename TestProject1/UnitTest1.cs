@@ -14,7 +14,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Controls.EndOfLine);
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(EndOfLine));
+            Assert.IsInstanceOfType(ast.Tokens.Single(), typeof(EndOfLine));
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Controls.EndOfLine);
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(EndOfLine));
+            Assert.IsInstanceOfType(ast.Tokens.First(), typeof(EndOfLine));
         }
 
         [TestMethod]
@@ -34,8 +34,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Controls.EndOfLine.Then(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(EndOfLine));
             Assert.IsInstanceOfType(list[1], typeof(EndOfFile));
@@ -48,7 +47,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Controls.EndOfLine.Then(Controls.EndOfFile));
 
             Assert.IsFalse(ast.Success);
-            Assert.AreEqual("Line 0, Col 0; not enough input to match \\r\\n or not enough input to match \\n.", ast.Error);
+            Assert.AreEqual("Line 0, Col 0; not enough input to match \\r\\n or not enough input to match \\n.; at ''", ast.Error);
         }
 
         [TestMethod]
@@ -58,8 +57,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Controls.EndOfLine.ManyThen(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(1, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(EndOfFile));
         }
@@ -77,8 +75,7 @@ namespace TestProject1
                     Controls.EndOfFile)
                 );
 
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(3, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(StringValue));
             Assert.AreEqual("a", (list[0] as StringValue).Value.ToString());
@@ -95,16 +92,12 @@ namespace TestProject1
                 Characters.Letter.DelimitedBy(Characters.Comma.Ignore()).Then(Controls.EndOfFile)
             );
 
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
-            Assert.AreEqual(2, list.Count);
-            Assert.IsInstanceOfType(list[0], typeof(TokenList));
-            var delimitedList = (list[0] as TokenList).Value;
-            Assert.AreEqual(3, delimitedList.Count);
-            Assert.AreEqual("a", (delimitedList[0] as StringValue).Value.ToString());
-            Assert.AreEqual("b", (delimitedList[1] as StringValue).Value.ToString());
-            Assert.AreEqual("c", (delimitedList[2] as StringValue).Value.ToString());
-            Assert.IsInstanceOfType(list[1], typeof(EndOfFile));
+            var list = ast.Tokens.ToList();
+            Assert.AreEqual(4, list.Count);
+            Assert.AreEqual("a", (list[0] as StringValue).Value.ToString());
+            Assert.AreEqual("b", (list[1] as StringValue).Value.ToString());
+            Assert.AreEqual("c", (list[2] as StringValue).Value.ToString());
+            Assert.IsInstanceOfType(list[3], typeof(EndOfFile));
         }
 
         [TestMethod]
@@ -116,8 +109,7 @@ namespace TestProject1
             );
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Identifier));
             Assert.AreEqual("identifier", (list[0] as Identifier).Value);
@@ -132,8 +124,7 @@ namespace TestProject1
             );
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Comment));
             Assert.AreEqual(" comment", ((Comment)list[0]).Value);
@@ -148,8 +139,7 @@ namespace TestProject1
             );
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Comment));
             Assert.AreEqual(" comment", ((Comment)list[0]).Value);
@@ -164,8 +154,7 @@ namespace TestProject1
             );
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(2, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Comment));
             Assert.AreEqual(" comment ", ((Comment)list[0]).Value);
@@ -178,8 +167,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Comments.CStyle.ManyThen(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Value;
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(4, list.Count);
             Assert.IsInstanceOfType(list[0], typeof(Comment));
             Assert.IsInstanceOfType(list[1], typeof(Comment));
@@ -195,8 +183,7 @@ namespace TestProject1
             var ast = TokenParser.Parse(code, Identfiers.Identifier.Surrounded(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
-            Assert.IsInstanceOfType(ast.Token, typeof(TokenList));
-            var list = (ast.Token as TokenList).Flatten().ToList();
+            var list = ast.Tokens.ToList();
             Assert.AreEqual(4, list.Count);
             Assert.IsInstanceOfType(list[1], typeof(Identifier));
             Assert.AreEqual("abc", ((Identifier)list[1]).Value);

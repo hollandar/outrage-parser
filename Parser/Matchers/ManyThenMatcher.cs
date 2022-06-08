@@ -24,14 +24,14 @@ namespace Parser.Matchers
                 var termMatch = many.Matches(input);
                 if (termMatch.Success)
                 {
-                    if (termMatch.Token != null) tokens.Add(termMatch.Token);
+                    if (termMatch.Tokens != null) tokens.AddRange(termMatch.Tokens);
                     matches++;
                 }
 
                 var thenMatch = then.Matches(input);
                 if (thenMatch.Success)
                 {
-                    if (thenMatch.Token != null) tokens.Add(thenMatch.Token);
+                    if (thenMatch.Tokens != null) tokens.AddRange(thenMatch.Tokens);
                     break;
                 }
 
@@ -47,7 +47,7 @@ namespace Parser.Matchers
                 return new Match($"expected at least {minimumMatches}, found {matches}");
             }
 
-            return new Match(new TokenList(tokens));
+            return new Match(tokens);
         }
     }
 }

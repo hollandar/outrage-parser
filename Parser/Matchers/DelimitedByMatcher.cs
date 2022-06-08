@@ -26,7 +26,7 @@ namespace Parser.Matchers
                 var termMatch = term.Matches(input);
                 if (termMatch.Success)
                 {
-                    if (termMatch.Token != null) tokens.Add(termMatch.Token);
+                    if (termMatch.Tokens != null) tokens.AddRange(termMatch.Tokens);
                     occurrences++;
                 }
                 else
@@ -37,7 +37,7 @@ namespace Parser.Matchers
                 var delimiterMatch = delimiter.Matches(input);
                 if (delimiterMatch.Success)
                 {
-                    if (delimiterMatch.Token != null) tokens.Add(delimiterMatch.Token);
+                    if (delimiterMatch.Tokens != null) tokens.AddRange(delimiterMatch.Tokens);
                     continue;
                 }
                 else
@@ -49,7 +49,7 @@ namespace Parser.Matchers
             if (occurrences < minOccurence || occurrences > maxOccurence) {
                 return new Match($"expected between {minOccurence} and {maxOccurence}");
             }
-            return new Match(new TokenList(tokens));
+            return new Match(tokens);
         }
     }
 }

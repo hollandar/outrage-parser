@@ -6,30 +6,30 @@ namespace Parser.Matchers
     public static class Matcher
     {
         public static IMatcher Ignore(this IMatcher matcher) {
-            return new CastMatcher<IToken, IgnoreToken>(matcher, token => IgnoreToken.Token);
+            return new IgnoreMatcher(matcher);
         }
 
         public static IMatcher Cast(this IMatcher matcher, Func<IToken, IToken> cast)
         {
-            return new CastMatcher<IToken, IToken>(matcher, cast);
-        }
-
-        public static IMatcher Cast<TFrom, TTo>(this IMatcher matcher, Func<TFrom, TTo> cast) where TFrom : IToken where TTo : IToken
-        {
-            return new CastMatcher<TFrom, TTo>(matcher, cast);
+            return new CastMatcher<IToken>(matcher, cast);
         }
 
         public static IMatcher Cast<TFrom>(this IMatcher matcher, Func<TFrom, IToken> cast) where TFrom : IToken
         {
-            return new CastMatcher<TFrom, IToken>(matcher, cast);
+            return new CastMatcher<TFrom>(matcher, cast);
+        }
+
+        public static IMatcher Wrap<TToken>(this IMatcher matcher, Func<Match, TToken> cast) where TToken : IToken
+        {
+            return new WrapMatcher<TToken>(matcher, cast);
         }
 
         public static IMatcher Identifier(this IMatcher matcher)
         {
-            return new CastMatcher<TokenList, Identifier>(matcher, tokenList =>
+            return new WrapMatcher<Identifier>(matcher, match =>
             {
                 var builder = new StringBuilder();
-                foreach (var token in tokenList.Value.Cast<StringValue>())
+                foreach (var token in match.Tokens.Where(t => t is StringValue).Cast<StringValue>())
                 {
                     builder.Append(token.Value);
                 }
@@ -38,29 +38,26 @@ namespace Parser.Matchers
             });
         }
 
-
-        private static void FlattenTokenList(StringBuilder builder, TokenList tokenList)
+        public static IMatcher Char(char c)
         {
-            foreach (var item in tokenList.Value)
-            {
-                if (item is StringValue)
-                {
-                    builder.Append((item as StringValue).Value);
-                }
-                if (item is TokenList)
-                {
-                    FlattenTokenList(builder, item as TokenList);
-                }
-            }
+            return new ExactMatcher(c, v => new StringValue(v));
+        }
+
+        public static IMatcher String(string s)
+        {
+            return new ExactMatcher(s, v => new StringValue(v));
         }
 
         public static IMatcher Text(this IMatcher matcher)
         {
-            return new CastMatcher<TokenList, Text>(matcher, tokenList =>
+            return new WrapMatcher<Text>(matcher, match =>
             {
                 var builder = new StringBuilder();
 
-                FlattenTokenList(builder, tokenList);
+                foreach (var token in match.Tokens.Where(r => r is StringValue).Cast<StringValue>())
+                {
+                    builder.Append(token.Value);
+                }
 
                 return new Text(builder.ToString());
             });
@@ -68,11 +65,14 @@ namespace Parser.Matchers
 
         public static IMatcher Convert<TType, TToken>(this IMatcher matcher, Func<TType, TToken> factory) where TToken: IToken
         {
-            return new CastMatcher<TokenList, TToken>(matcher, tokenList =>
+            return new WrapMatcher<TToken>(matcher, match =>
             {
                 var builder = new StringBuilder();
 
-                FlattenTokenList(builder, tokenList);
+                foreach (var token in match.Tokens.Where(t => t is StringValue).Cast<StringValue>())
+                {
+                    builder.Append(token.Value);
+                }
 
                 return factory((TType)System.Convert.ChangeType(builder.ToString(), typeof(TType)));
             });
@@ -80,7 +80,7 @@ namespace Parser.Matchers
 
         public static IMatcher Produce<TToken>(this IMatcher matcher) where TToken : IToken, new()
         {
-            return new CastMatcher<IToken, TToken>(matcher, _ => new TToken());
+            return new CastMatcher<IToken>(matcher, _ => new TToken());
         }
 
         public static IMatcher Then(this IMatcher matcher, IMatcher followon)

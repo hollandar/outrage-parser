@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Parser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parser.Tokens
+namespace Calculator.Tokens
 {
-    public static class TokenExtensions
+    public class RaiseToken : IToken
     {
     }
 }

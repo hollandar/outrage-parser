@@ -13,28 +13,31 @@ namespace Parser.Matchers
             this.thenMatcher = thenMatcher;
         }
 
-        public Match Matches(Source input)
+        public Match Matches(Source source)
         {
+            var trackingSource = source.Clone();
             List<IToken> tokens = new();
-            var initialMatch = initialMatcher.Matches(input);
+            var initialMatch = initialMatcher.Matches(trackingSource);
             if (initialMatch.Success)
             {
-                if (initialMatch.Token != null) tokens.Add(initialMatch.Token);
+                if (initialMatch.Tokens != null) tokens.AddRange(initialMatch.Tokens);
             } else
             {
                 return initialMatch;
             }
 
-            var thenMatch = thenMatcher.Matches(input);
+            var thenMatch = thenMatcher.Matches(trackingSource);
             if (thenMatch.Success) { 
-                if (thenMatch.Token != null) tokens.Add(thenMatch.Token);   
+                if (thenMatch.Tokens != null) tokens.AddRange(thenMatch.Tokens);   
             }
             else
             {
                 return thenMatch;
             }
 
-            return new Match(new TokenList(tokens));
+            source.Advance(trackingSource.Position - source.Position);
+
+            return new Match(tokens);
         }
     }
 }

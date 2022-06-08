@@ -15,7 +15,7 @@ namespace Parser
 
             if (match.Success == false)
             {
-                return new Match($"Line {memory.Line}, Col {memory.Column}; {match.Error}");
+                return new Match($"Line {memory.Line}, Col {memory.Column}; {match.Error}; at '{memory.ReadOnlyMemory}'");
             }
             else
             {

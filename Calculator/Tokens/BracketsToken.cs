@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 
 namespace Calculator.Tokens
 {
-    internal class BracketsToken: FlattenedToken
+    public class BracketsToken : IToken
     {
-        public BracketsToken(TokenList tokens): base(tokens)
+        public BracketsToken(IEnumerable<IToken> tokens)
         {
+            this.Value = tokens;
         }
+
+        public IEnumerable<IToken> Value { get; }
     }
 }

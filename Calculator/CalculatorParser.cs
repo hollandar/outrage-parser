@@ -14,23 +14,35 @@ namespace Calculator
     internal static class CalculatorParser
     {
         public static IMatcher Decimal = Matcher.Some(
-            Matcher.FirstOf(Characters.Digit, Characters.Period)
+            Matcher.FirstOf(
+                Matcher.Some(Characters.Digit).Then(Characters.Period).Then(Matcher.Some(Characters.Digit)), 
+                Matcher.Some(Characters.Digit)
+            )
         ).Convert<decimal, DecimalToken>(value => new DecimalToken(value));
 
+        public static IMatcher Sqrt = 
+            Matcher.String("sqrt").Ignore()
+            .Then(Matcher.Surrounded(Matcher.Ref(() => Expression), Characters.LeftBracket.Ignore(), Characters.RightBracket.Ignore()))
+            .Wrap<FunctionToken>(list => new FunctionToken(FunctionEnum.sqrt, list.Tokens));
+
+        public static IMatcher Functions =
+            Matcher.FirstOf(Sqrt);
+
+        public static IMatcher Raise = Matcher.Char('^').Produce<RaiseToken>();
         public static IMatcher Add => Characters.Plus.Produce<AddToken>();
         public static IMatcher Subtract => Characters.Minus.Produce<SubtractToken>();
         public static IMatcher Multiply => Characters.Multiply.Produce<MultiplyToken>();
         public static IMatcher Divide => Characters.Divide.Produce<DivideToken>();
 
         public static IMatcher Expression => Matcher.Many(
-            Matcher.FirstOf(Add, Subtract, Multiply, Divide, Decimal, Matcher.Ref(() => BracketedExpression), Characters.Whitespaces.Ignore())
+            Matcher.FirstOf(Functions, Raise, Add, Subtract, Multiply, Divide, Decimal, Matcher.Ref(() => BracketedExpression), Characters.Whitespaces.Ignore())
         );
 
         public static IMatcher BracketedExpression = Matcher.Surrounded(
             Expression,
             Characters.LeftBracket.Ignore(),
             Characters.RightBracket.Ignore()
-        ).Cast<TokenList, BracketsToken>(list => new BracketsToken(list));
+        ).Wrap<BracketsToken>(list => new BracketsToken(list.Tokens));
 
         public static IMatcher Calculation = Expression.Then(Controls.EndOfFile.Ignore());
 
@@ -43,8 +55,7 @@ namespace Calculator
             }
             else
             {
-                Debug.Assert(match.Token is TokenList);
-                return (match.Token as TokenList).Flatten();
+                return match.Tokens;
             }
         }
     }

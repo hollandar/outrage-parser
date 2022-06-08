@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Parser.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,13 @@ namespace Parser
         public Match(IToken token)
         {
             Success = true;
-            //Length = length;
-            Token = token;
+            Tokens = Enumerable.Repeat(token, 1);
+        }
+
+        public Match(IEnumerable<IToken> tokens)
+        {
+            Success = true;
+            Tokens = tokens;
         }
 
         public Match(string error)
@@ -21,9 +27,15 @@ namespace Parser
             Error = error;
         }
 
+        public Match()
+        {
+            Success = true;
+            Tokens = Enumerable.Empty<IToken>();
+        }
+
         public bool Success { get; } = false;
         //public int Length { get; } = 0;
-        public IToken? Token { get; } = null;
+        public IEnumerable<IToken> Tokens { get; } = null;
         public string Error { get; } = String.Empty;
     }
 

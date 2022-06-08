@@ -29,11 +29,6 @@ namespace Parser.Matchers
             this.tokenize = tokenize;
         }
 
-        public Memory<char> GetValue()
-        {
-            throw new NotImplementedException();
-        }
-
         public Match Matches(Source input)
         {
             if (input.Length >= match.Length)
