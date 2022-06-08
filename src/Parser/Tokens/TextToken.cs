@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Parser.Tokens
 {
-    public class Identifier : IToken
+    public class TextToken : IToken
     {
-        public Identifier(string value)
+        public TextToken(string value)
         {
             this.Value = value;
         }

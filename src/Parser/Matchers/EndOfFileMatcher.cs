@@ -12,7 +12,7 @@ namespace Parser.Matchers
         {
             if (input.Length == 0)
             {
-                return new Match(new EndOfFile());
+                return new Match(new EndOfFileToken());
             }
 
             return new Match("End of file expected.");

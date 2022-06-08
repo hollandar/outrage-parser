@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Parser.Tokens
 {
-    public class StringValue: IToken
+    public class CommentToken : IToken
     {
-        public StringValue(ReadOnlyMemory<char> value)
+        public CommentToken(string value)
         {
             this.Value = value;
         }
 
-        public ReadOnlyMemory<char> Value { get; }
+        public string Value { get; }
     }
 }

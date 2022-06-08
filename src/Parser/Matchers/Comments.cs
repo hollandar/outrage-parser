@@ -14,7 +14,7 @@ namespace Parser.Matchers
                     Controls.EndOfLine.Or(Controls.EndOfFile.Preview()) // terminator
                 )
             )
-            .Text().Cast<Text>(text => new Comment(text.Value));
+            .Text().Cast<TextToken>(text => new CommentToken(text.Value));
         
         public static IMatcher ShellStyleOpeningSingle = Matcher.Char('#');
         public static IMatcher ShellStyle =
@@ -26,7 +26,7 @@ namespace Parser.Matchers
                     Controls.EndOfLine.Or(Controls.EndOfFile.Preview()) // terminator
                 )
             )
-            .Text().Cast<Text>(text => new Comment(text.Value));
+            .Text().Cast<TextToken>(text => new CommentToken(text.Value));
 
         public static IMatcher CStyleOpening = Characters.ForwardSlash.Then(Characters.Asterisk);
         public static IMatcher CStyleClosing = Characters.Asterisk.Then(Characters.ForwardSlash);
@@ -40,6 +40,6 @@ namespace Parser.Matchers
                     CStyleClosing.Ignore() // closing */
                 )
             )
-            .Text().Cast<Text>(text => new Comment(text.Value));
+            .Text().Cast<TextToken>(text => new CommentToken(text.Value));
     }
 }

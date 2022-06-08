@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace Parser.Tokens
 {
-    public class Text : IToken
+    public class EndOfLineToken : IToken
     {
-        public Text(string value)
-        {
-            this.Value = value;
-        }
-
-        public string Value { get; }
     }
 }

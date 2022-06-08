@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Parser.Tokens
 {
-    public class Comment : IToken
+    public class IdentifierToken : IToken
     {
-        public Comment(string value)
+        public IdentifierToken(string value)
         {
             this.Value = value;
         }

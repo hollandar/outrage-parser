@@ -26,40 +26,40 @@ namespace Parser.Matchers
 
         public static IMatcher Identifier(this IMatcher matcher)
         {
-            return new WrapMatcher<Identifier>(matcher, match =>
+            return new WrapMatcher<IdentifierToken>(matcher, match =>
             {
                 var builder = new StringBuilder();
-                foreach (var token in match.Tokens.Where(t => t is StringValue).Cast<StringValue>())
+                foreach (var token in match.Tokens.Where(t => t is StringValueToken).Cast<StringValueToken>())
                 {
                     builder.Append(token.Value);
                 }
 
-                return new Identifier(builder.ToString());
+                return new IdentifierToken(builder.ToString());
             });
         }
 
         public static IMatcher Char(char c)
         {
-            return new ExactMatcher(c, v => new StringValue(v));
+            return new ExactMatcher(c, v => new StringValueToken(v));
         }
 
         public static IMatcher String(string s)
         {
-            return new ExactMatcher(s, v => new StringValue(v));
+            return new ExactMatcher(s, v => new StringValueToken(v));
         }
 
         public static IMatcher Text(this IMatcher matcher)
         {
-            return new WrapMatcher<Text>(matcher, match =>
+            return new WrapMatcher<TextToken>(matcher, match =>
             {
                 var builder = new StringBuilder();
 
-                foreach (var token in match.Tokens.Where(r => r is StringValue).Cast<StringValue>())
+                foreach (var token in match.Tokens.Where(r => r is StringValueToken).Cast<StringValueToken>())
                 {
                     builder.Append(token.Value);
                 }
 
-                return new Text(builder.ToString());
+                return new TextToken(builder.ToString());
             });
         }
 
@@ -69,7 +69,7 @@ namespace Parser.Matchers
             {
                 var builder = new StringBuilder();
 
-                foreach (var token in match.Tokens.Where(t => t is StringValue).Cast<StringValue>())
+                foreach (var token in match.Tokens.Where(t => t is StringValueToken).Cast<StringValueToken>())
                 {
                     builder.Append(token.Value);
                 }

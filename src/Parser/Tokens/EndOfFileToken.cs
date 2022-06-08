@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Parser.Tokens
 {
-    public class EndOfFile: IToken
+    public class EndOfFileToken: IToken
     {
     }
 }
