@@ -5,7 +5,7 @@ using Parser.Tokens;
 namespace TestProject1
 {
     [TestClass]
-    public class UnitTest1
+    public class ParserTests
     {
         [TestMethod]
         public void Lf()

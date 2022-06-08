@@ -15,6 +15,18 @@ namespace Parser.Matchers
                 )
             )
             .Text().Cast<Text>(text => new Comment(text.Value));
+        
+        public static IMatcher ShellStyleOpeningSingle = Matcher.Char('#');
+        public static IMatcher ShellStyle =
+            Matcher.Block(
+                ShellStyleOpeningSingle.Ignore() // opening #
+            ).Then(
+                Matcher.ManyThen(
+                    Characters.AnyChar,
+                    Controls.EndOfLine.Or(Controls.EndOfFile.Preview()) // terminator
+                )
+            )
+            .Text().Cast<Text>(text => new Comment(text.Value));
 
         public static IMatcher CStyleOpening = Characters.ForwardSlash.Then(Characters.Asterisk);
         public static IMatcher CStyleClosing = Characters.Asterisk.Then(Characters.ForwardSlash);
