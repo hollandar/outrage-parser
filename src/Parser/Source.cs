@@ -14,6 +14,14 @@ namespace Parser
             this.memory = source.AsMemory();
         }
 
+        internal Source(Source source, int constrainLength)
+        {
+            this.memory = source.memory.Slice(0, constrainLength);
+            this.Line = source.Line;
+            this.Column = source.Column;
+            this.Position = source.Position;
+        }
+
         internal Source(Source from)
         {
             this.memory = from.memory;
@@ -47,6 +55,11 @@ namespace Parser
         public Source Clone()
         {
             return new Source(this);
+        }
+
+        public Source Constrain(int length)
+        {
+            return new Source(this, length);
         }
     }
 }

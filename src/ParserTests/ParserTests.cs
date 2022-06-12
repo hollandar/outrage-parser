@@ -188,5 +188,46 @@ namespace TestProject1
             Assert.IsInstanceOfType(list[1], typeof(IdentifierToken));
             Assert.AreEqual("abc", ((IdentifierToken)list[1]).Value);
         }
+        
+        [TestMethod]
+        public void SurroundedUntil()
+        {
+            var code = "{abc}";
+            var ast = TokenParser.Parse(code, Identfiers.Identifier.SurroundedUntil(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
+
+            Assert.IsTrue(ast.Success);
+            var list = ast.Tokens.ToList();
+            Assert.AreEqual(4, list.Count);
+            Assert.IsInstanceOfType(list[1], typeof(IdentifierToken));
+            Assert.AreEqual("abc", ((IdentifierToken)list[1]).Value);
+        }
+
+        [TestMethod]
+        public void SurroundedAlt()
+        {
+            var code = "{ using abc; }";
+            var ast = TokenParser.Parse(code, 
+                Matcher.Many(Characters.AnyChar).Text()
+                .Surrounded(Characters.LeftBrace, Characters.RightBrace)
+                .Then(Controls.EndOfFile));
+
+            Assert.IsFalse (ast.Success);
+        }
+
+        [TestMethod]
+        public void SurroundedUntilAlt()
+        {
+            var code = "{ using abc; }";
+            var ast = TokenParser.Parse(code, 
+                Matcher.Many(Characters.AnyChar).Text()
+                .SurroundedUntil(Characters.LeftBrace, Characters.RightBrace)
+                .Then(Controls.EndOfFile));
+
+            Assert.IsTrue(ast.Success);
+            var list = ast.Tokens.ToList();
+            Assert.AreEqual(4, list.Count);
+            Assert.IsInstanceOfType(list[1], typeof(TextToken));
+            Assert.AreEqual(" using abc; ", ((TextToken)list[1]).Value);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace Parser.Matchers
         {
             if (input.Length >= 1)
             {
-                var value = input.ReadOnlyMemory[..1];
+                var value = input.ReadOnlyMemory.Slice(0, 1);
                 var matchResult = match(value.Span[0]);
                 if (matchResult.success)
                 {

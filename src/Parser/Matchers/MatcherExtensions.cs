@@ -62,6 +62,26 @@ namespace Parser.Matchers
                 return new TextToken(builder.ToString());
             });
         }
+        
+        public static IMatcher TextTrim(this IMatcher matcher)
+        {
+            return matcher.TextTrim(' ');
+        }
+
+        public static IMatcher TextTrim(this IMatcher matcher, params char[] trimChars)
+        {
+            return new WrapMatcher<TextToken>(matcher, match =>
+            {
+                var builder = new StringBuilder();
+
+                foreach (var token in match.Tokens.Where(r => r is StringValueToken).Cast<StringValueToken>())
+                {
+                    builder.Append(token.Value);
+                }
+
+                return new TextToken(builder.ToString().Trim(trimChars));
+            });
+        }
 
         public static IMatcher Convert<TType, TToken>(this IMatcher matcher, Func<TType, TToken> factory) where TToken: IToken
         {
@@ -139,9 +159,19 @@ namespace Parser.Matchers
             return new DelimitedByMatcher(input, delimiter, minOccurrence, maxOccurence);
         }
 
+        public static IMatcher SurroundedUntil(this IMatcher innerMatcher, IMatcher leftMatcher, IMatcher rightMatcher)
+        {
+            return leftMatcher.Then(innerMatcher.Until(rightMatcher));
+        }
+
         public static IMatcher Surrounded(this IMatcher innerMatcher, IMatcher leftMatcher, IMatcher rightMatcher)
         {
             return leftMatcher.Then(innerMatcher).Then(rightMatcher);
+        }
+
+        public static IMatcher Until(this IMatcher matcher, IMatcher until)
+        {
+            return new UntilMatcher(matcher, until);
         }
 
         public static IMatcher Ref(Func<IMatcher> referenced)
