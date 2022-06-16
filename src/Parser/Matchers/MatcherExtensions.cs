@@ -178,5 +178,10 @@ namespace Parser.Matchers
         {
             return new RefMatcher(referenced);
         }
+
+        public static IMatcher When(this IMatcher matcher, Func<IEnumerable<IToken>, bool> clause, string msg = "")
+        {
+            return new WhenMatcher(matcher, clause, msg);
+        }
     }
 }

@@ -104,7 +104,7 @@ namespace TestProject1
         public void Identifier()
         {
             var code = "identifier";
-            var ast = TokenParser.Parse(code, 
+            var ast = TokenParser.Parse(code,
                 Identfiers.Identifier.Then(Controls.EndOfFile)
             );
 
@@ -188,7 +188,7 @@ namespace TestProject1
             Assert.IsInstanceOfType(list[1], typeof(IdentifierToken));
             Assert.AreEqual("abc", ((IdentifierToken)list[1]).Value);
         }
-        
+
         [TestMethod]
         public void SurroundedUntil()
         {
@@ -206,19 +206,19 @@ namespace TestProject1
         public void SurroundedAlt()
         {
             var code = "{ using abc; }";
-            var ast = TokenParser.Parse(code, 
+            var ast = TokenParser.Parse(code,
                 Matcher.Many(Characters.AnyChar).Text()
                 .Surrounded(Characters.LeftBrace, Characters.RightBrace)
                 .Then(Controls.EndOfFile));
 
-            Assert.IsFalse (ast.Success);
+            Assert.IsFalse(ast.Success);
         }
 
         [TestMethod]
         public void SurroundedUntilAlt()
         {
             var code = "{ using abc; }";
-            var ast = TokenParser.Parse(code, 
+            var ast = TokenParser.Parse(code,
                 Matcher.Many(Characters.AnyChar).Text()
                 .SurroundedUntil(Characters.LeftBrace, Characters.RightBrace)
                 .Then(Controls.EndOfFile));
@@ -228,6 +228,34 @@ namespace TestProject1
             Assert.AreEqual(4, list.Count);
             Assert.IsInstanceOfType(list[1], typeof(TextToken));
             Assert.AreEqual(" using abc; ", ((TextToken)list[1]).Value);
+        }
+
+        [TestMethod]
+        public void WhenPositive()
+        {
+            var code = "identifier";
+            var ast = TokenParser.Parse(code,
+                Identfiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "identifier")
+                .Then(Controls.EndOfFile)
+            );
+
+            Assert.IsTrue(ast.Success);
+            var list = ast.Tokens.ToList();
+            Assert.AreEqual(2, list.Count);
+            Assert.IsInstanceOfType(list[0], typeof(IdentifierToken));
+            Assert.AreEqual("identifier", ((IdentifierToken)list[0]).Value);
+        }
+
+        [TestMethod]
+        public void WhenNegative()
+        {
+            var code = "identifier";
+            var ast = TokenParser.Parse(code,
+                Identfiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "other")
+                .Then(Controls.EndOfFile)
+            );
+
+            Assert.IsFalse(ast.Success);
         }
     }
 }
