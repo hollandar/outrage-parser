@@ -2,7 +2,7 @@ using Parser;
 using Parser.Matchers;
 using Parser.Tokens;
 
-namespace TestProject1
+namespace ParserTests
 {
     [TestClass]
     public class ParserTests
@@ -231,6 +231,18 @@ namespace TestProject1
         }
 
         [TestMethod]
+        public void SurroundedUntilExhausted()
+        {
+            var code = "{ using abc; ";
+            var ast = TokenParser.Parse(code,
+                Matcher.Many(Characters.AnyChar).Text()
+                .SurroundedUntil(Characters.LeftBrace, Characters.RightBrace)
+                .Then(Controls.EndOfFile));
+
+            Assert.IsFalse(ast.Success);
+        }
+
+        [TestMethod]
         public void WhenPositive()
         {
             var code = "identifier";
@@ -257,5 +269,6 @@ namespace TestProject1
 
             Assert.IsFalse(ast.Success);
         }
+
     }
 }

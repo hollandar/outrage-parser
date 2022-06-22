@@ -25,7 +25,7 @@ namespace Parser.Matchers
             do
             {
                 if (untilSource.ReadOnlyMemory.Length == 0)
-                    throw new Exception();
+                    return new Match("Reached the end of the file matching until.");
 
                 untilPosition = untilSource.Position;
                 untilMatch = this.until.Matches(untilSource);
