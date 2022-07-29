@@ -16,6 +16,7 @@ namespace Calculator
         public static IMatcher Decimal = Matcher.Some(
             Matcher.FirstOf(
                 Matcher.Some(Characters.Digit).Then(Characters.Period).Then(Matcher.Some(Characters.Digit)), 
+                Characters.Period.Then(Matcher.Some(Characters.Digit)),
                 Matcher.Some(Characters.Digit)
             )
         ).Convert<decimal, DecimalToken>(value => new DecimalToken(value));
