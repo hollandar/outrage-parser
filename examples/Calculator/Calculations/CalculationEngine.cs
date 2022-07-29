@@ -1,5 +1,5 @@
 ﻿using Calculator.Tokens;
-using Parser;
+using Outrage.TokenParser;
 using System;
 using System.Collections.Generic;
 using System.Linq;

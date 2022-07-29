@@ -1,6 +1,4 @@
-﻿using Parser.Tokens;
-
-namespace Parser.Matchers
+﻿namespace Outrage.TokenParser.Matchers
 {
     public class ManyThenMatcher : IMatcher
     {

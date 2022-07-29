@@ -1,7 +1,7 @@
 ﻿using Calculator.Tokens;
-using Parser;
-using Parser.Matchers;
-using Parser.Tokens;
+using Outrage.TokenParser;
+using Outrage.TokenParser.Matchers;
+using Outrage.TokenParser.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

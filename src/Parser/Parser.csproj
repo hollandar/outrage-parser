@@ -7,8 +7,22 @@
 		<Nullable>enable</Nullable>
 		<IsPackable>true</IsPackable>
 		<PackageId>Outrage.TokenParser</PackageId>
+		<Authors>Adrian Holland</Authors>
+		<Company>Webfinity Pty. Ltd.</Company>
+		<Description>
+			An easy to understand tokenizing parser that is usable for a wide range of string parsing scenarios.  Especially useful for expression interpretation (see the Calculator example).  The parser uses spans to parse text, so is performant and has low memory usage in most scenarios.
+		</Description>
+		<Copyright>2021-2022, Webefinity Pty Ltd</Copyright>
+		<PackageTags>Parser;Token;Tokenize;Compiler;Source Generator</PackageTags>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<PackageProjectUrl>https://github.com/hollandar/outrage-parser</PackageProjectUrl>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<None Include="LICENSE.md" Pack="true" PackagePath="" />
+	</ItemGroup>
+	
 	<ItemGroup>
 	  <PackageReference Include="System.Memory" Version="4.5.5" />
 	</ItemGroup>

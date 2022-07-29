@@ -1,7 +1,7 @@
-﻿using Parser.Tokens;
+﻿using Outrage.TokenParser.Tokens;
 using System.Text;
 
-namespace Parser.Matchers
+namespace Outrage.TokenParser.Matchers
 {
     public static class Matcher
     {
@@ -182,6 +182,11 @@ namespace Parser.Matchers
         public static IMatcher When(this IMatcher matcher, Func<IEnumerable<IToken>, bool> clause, string msg = "")
         {
             return new WhenMatcher(matcher, clause, msg);
+        }
+
+        public static IMatcher Except(this IMatcher matcher, IMatcher except)
+        {
+            return new ExceptMatcher(except, matcher);
         }
     }
 }

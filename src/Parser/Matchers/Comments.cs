@@ -1,6 +1,7 @@
-﻿using Parser.Tokens;
+﻿using Outrage.TokenParser;
+using Outrage.TokenParser.Tokens;
 
-namespace Parser.Matchers
+namespace Outrage.TokenParser.Matchers
 {
     public static class Comments
     {

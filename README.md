@@ -6,7 +6,7 @@ Your token tree then drives how you interpret the instruction provided, assuming
 
 Help about parsing errors is provided, but can be improved.  In many cases it wont tell you what it expected, but will tell you why and where it failed to parse the text.
 
-# Acutally understandable?
+## Acutally understandable?
 
 Yes, similar parsers make use of complex linq queries.  You dont need to do that here.
 
@@ -29,9 +29,9 @@ In this scenario (will find in the unit tests) the matchers will:
 2. Match a name as a series of Characters.Letter (at least one) followed by a period (which it ignores) and produces a text token.
 3. Match the end of the file.
 
-The matchers are shown in the Source matcher, which refers by to the MyNameIs and Name matchers.
+The series of matchers (MyNameIs and Name) are used by the Source matcher.
 
-The rest of this will be a Match object with two Tokens (assuming Match.Success is true):
+Process now returns a Match object with two Tokens (assuming Match.Success is true):
 1. TextToken( Value = "YourName" )
 2. EndOfFileToken
 
@@ -39,8 +39,22 @@ If the match fails (for example; you include a space in your name) you will get 
 
 # Tests
 
-Parser includes a test project to validate the base matching capabilities, what is also an example that provides a variety of usage models.
+Parser includes tests to validate the base matching capabilities, there is also a great example parser for parsing and interpreting calculations.
+
+# Look-Ahead Behaviour
+
+The parser includes look-ahead capability using the Until matcher; in this scenario is slightly less performant; because a series of increasing scope matches are tried until matching is possible.
+
+For example, to match `(some text)` you could do the following:
+```
+    Characters.AnyChar.Some().SurroundedUntil(Characters.LeftBracket, Characters.RightBracket);
+```
+This match suucessfully, but performs a series of look ahead matches for the right bracket character.  You can avoid this by excluding the right bracket from the inner match, and use Sourrounded instead.
+```
+    Characters.AnyChar.Except(Characters.RightBracket).Some().Surrounded(Characters.LeftBracket, Characters.RightBracket);
+```
+Now we wont use look-ahead and the match will perform significantly faster.
 
 # License
 
-Not yet defined.
+The Prosperity Public License 3.0.0.  See LICENSE.MD.

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Parser.Matchers
+﻿namespace Outrage.TokenParser.Matchers
 {
     public class UntilMatcher : IMatcher
     {

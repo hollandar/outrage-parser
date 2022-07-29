@@ -1,11 +1,4 @@
-﻿using Parser.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Parser
+﻿namespace Outrage.TokenParser
 {
     public struct Match
     {

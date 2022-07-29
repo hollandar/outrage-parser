@@ -1,6 +1,6 @@
-﻿using Parser.Tokens;
+﻿using Outrage.TokenParser.Tokens;
 
-namespace Parser.Matchers
+namespace Outrage.TokenParser.Matchers
 {
     public static class Characters
     {
@@ -11,6 +11,7 @@ namespace Parser.Matchers
         public static IMatcher UppercaseLetter = new CharacterMatcher(value => (char.IsLetter(value) && char.IsUpper(value), "Expected an uppercase letter (A-Z)."), value => new StringValueToken(value));
         public static IMatcher LowercaseLetter = new CharacterMatcher(value => (char.IsLetter(value) && char.IsLower(value), "Expected a lowercase letter (a-z)."), value => new StringValueToken(value));
 
+        public static IMatcher Char(char c) => new CharacterMatcher(value => (value == c, $"Expected {c}."), value => new StringValueToken(value));
 
         public static IMatcher Period = new ExactMatcher('.', value => new StringValueToken(value));
         public static IMatcher Comma = new ExactMatcher(',', value => new StringValueToken(value));

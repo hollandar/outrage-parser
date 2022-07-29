@@ -1,6 +1,6 @@
-using Parser;
-using Parser.Matchers;
-using Parser.Tokens;
+using Outrage.TokenParser;
+using Outrage.TokenParser.Matchers;
+using Outrage.TokenParser.Tokens;
 
 namespace ParserTests
 {
@@ -268,6 +268,28 @@ namespace ParserTests
             );
 
             Assert.IsFalse(ast.Success);
+        }
+
+        [TestMethod]
+        public void Except()
+        {
+            var code = "a";
+            var ast = TokenParser.Parse(code,
+                Characters.AnyChar.Except(Characters.Char('a')).Then(Controls.EndOfFile)
+            );
+
+            Assert.IsFalse(ast.Success);
+        }
+
+        [TestMethod]
+        public void NegatedExcept()
+        {
+            var code = "b";
+            var ast = TokenParser.Parse(code,
+                Characters.AnyChar.Except(Characters.Char('a')).Then(Controls.EndOfFile)
+            );
+
+            Assert.IsTrue(ast.Success);
         }
 
     }

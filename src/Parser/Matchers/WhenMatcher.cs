@@ -1,4 +1,4 @@
-﻿namespace Parser.Matchers
+﻿namespace Outrage.TokenParser.Matchers
 {
     public class WhenMatcher : IMatcher
     {
