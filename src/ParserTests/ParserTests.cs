@@ -105,7 +105,7 @@ namespace ParserTests
         {
             var code = "identifier";
             var ast = TokenParser.Parse(code,
-                Identfiers.Identifier.Then(Controls.EndOfFile)
+                Identifiers.Identifier.Then(Controls.EndOfFile)
             );
 
             Assert.IsTrue(ast.Success);
@@ -180,7 +180,7 @@ namespace ParserTests
         public void Surrounded()
         {
             var code = "{abc}";
-            var ast = TokenParser.Parse(code, Identfiers.Identifier.Surrounded(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
+            var ast = TokenParser.Parse(code, Identifiers.Identifier.Surrounded(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
             var list = ast.Tokens.ToList();
@@ -193,7 +193,7 @@ namespace ParserTests
         public void SurroundedUntil()
         {
             var code = "{abc}";
-            var ast = TokenParser.Parse(code, Identfiers.Identifier.SurroundedUntil(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
+            var ast = TokenParser.Parse(code, Identifiers.Identifier.SurroundedUntil(Characters.LeftBrace, Characters.RightBrace).Then(Controls.EndOfFile));
 
             Assert.IsTrue(ast.Success);
             var list = ast.Tokens.ToList();
@@ -247,7 +247,7 @@ namespace ParserTests
         {
             var code = "identifier";
             var ast = TokenParser.Parse(code,
-                Identfiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "identifier")
+                Identifiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "identifier")
                 .Then(Controls.EndOfFile)
             );
 
@@ -263,7 +263,7 @@ namespace ParserTests
         {
             var code = "identifier";
             var ast = TokenParser.Parse(code,
-                Identfiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "other")
+                Identifiers.Identifier.When(r => r.Cast<IdentifierToken>().Single().Value == "other")
                 .Then(Controls.EndOfFile)
             );
 
@@ -275,7 +275,7 @@ namespace ParserTests
         {
             var code = "a";
             var ast = TokenParser.Parse(code,
-                Characters.AnyChar.Except(Characters.Char('a')).Then(Controls.EndOfFile)
+                Characters.AnyChar.Except(Matcher.Char('a')).Then(Controls.EndOfFile)
             );
 
             Assert.IsFalse(ast.Success);
@@ -286,7 +286,7 @@ namespace ParserTests
         {
             var code = "b";
             var ast = TokenParser.Parse(code,
-                Characters.AnyChar.Except(Characters.Char('a')).Then(Controls.EndOfFile)
+                Characters.AnyChar.Except(Matcher.Char('a')).Then(Controls.EndOfFile)
             );
 
             Assert.IsTrue(ast.Success);
@@ -319,7 +319,7 @@ namespace ParserTests
         {
             var code = "b";
             var ast = TokenParser.Parse(code,
-                Characters.Char('a').Optional().Then(Characters.Char('b')).Then(Controls.EndOfFile)
+                Matcher.Char('a').Optional().Then(Matcher.Char('b')).Then(Controls.EndOfFile)
             );
 
             Assert.IsTrue(ast.Success);
@@ -330,7 +330,7 @@ namespace ParserTests
         {
             var code = "ab";
             var ast = TokenParser.Parse(code,
-                Characters.Char('a').Optional().Then(Characters.Char('b')).Then(Controls.EndOfFile)
+                Matcher.Char('a').Optional().Then(Matcher.Char('b')).Then(Controls.EndOfFile)
             );
 
             Assert.IsTrue(ast.Success);

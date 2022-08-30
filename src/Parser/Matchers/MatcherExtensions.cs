@@ -43,6 +43,12 @@ namespace Outrage.TokenParser.Matchers
             return new ExactMatcher(c, v => new StringValueToken(v));
         }
 
+        public static IMatcher Chars(params char[] chars)
+        {
+            IEnumerable<IMatcher> matchers = chars.Select(c => new ExactMatcher(c, v => new StringValueToken(v)));
+            return new FirstOfMatcher(matchers.ToArray());
+        }
+
         public static IMatcher String(string s)
         {
             return new ExactMatcher(s, v => new StringValueToken(v));

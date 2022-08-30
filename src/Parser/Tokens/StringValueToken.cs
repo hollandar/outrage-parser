@@ -8,5 +8,10 @@
         }
 
         public ReadOnlyMemory<char> Value { get; }
+
+        public override string ToString()
+        {
+            return $"{Value}";
+        }
     }
 }

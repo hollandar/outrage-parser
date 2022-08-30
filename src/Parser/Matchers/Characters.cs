@@ -11,8 +11,6 @@ namespace Outrage.TokenParser.Matchers
         public static IMatcher UppercaseLetter = new CharacterMatcher(value => (char.IsLetter(value) && char.IsUpper(value), "Expected an uppercase letter (A-Z)."), value => new StringValueToken(value));
         public static IMatcher LowercaseLetter = new CharacterMatcher(value => (char.IsLetter(value) && char.IsLower(value), "Expected a lowercase letter (a-z)."), value => new StringValueToken(value));
 
-        public static IMatcher Char(char c) => new CharacterMatcher(value => (value == c, $"Expected {c}."), value => new StringValueToken(value));
-
         public static IMatcher Period = new ExactMatcher('.', value => new StringValueToken(value));
         public static IMatcher Comma = new ExactMatcher(',', value => new StringValueToken(value));
         public static IMatcher Semicolon = new ExactMatcher(';', value => new StringValueToken(value));
@@ -28,6 +26,7 @@ namespace Outrage.TokenParser.Matchers
         public static IMatcher Underscore = new ExactMatcher('_', value => new StringValueToken(value));
         public static IMatcher Plus = new ExactMatcher('+', value => new StringValueToken(value));
         public static IMatcher Minus = new ExactMatcher('-', value => new StringValueToken(value));
+        public static IMatcher Hyphen = Minus;
         public static IMatcher Equal = new ExactMatcher('=', value => new StringValueToken(value));
         public static IMatcher Equality = new ExactMatcher("==", value => new StringValueToken(value));
         public static IMatcher NotEquality = new ExactMatcher("!=", value => new StringValueToken(value));
