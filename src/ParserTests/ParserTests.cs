@@ -292,5 +292,48 @@ namespace ParserTests
             Assert.IsTrue(ast.Success);
         }
 
+        [TestMethod]
+        public void Once()
+        {
+            var code = "a";
+            var ast = TokenParser.Parse(code,
+                Characters.AnyChar.Once().Then(Controls.EndOfFile)
+            );
+
+            Assert.IsTrue(ast.Success);
+        }
+        
+        [TestMethod]
+        public void NegatedOnce()
+        {
+            var code = "ab";
+            var ast = TokenParser.Parse(code,
+                Characters.AnyChar.Once().Then(Controls.EndOfFile)
+            );
+
+            Assert.IsFalse(ast.Success);
+        }
+        
+        [TestMethod]
+        public void OptionalUnmatched()
+        {
+            var code = "b";
+            var ast = TokenParser.Parse(code,
+                Characters.Char('a').Optional().Then(Characters.Char('b')).Then(Controls.EndOfFile)
+            );
+
+            Assert.IsTrue(ast.Success);
+        }
+        
+        [TestMethod]
+        public void OptionalMatched()
+        {
+            var code = "ab";
+            var ast = TokenParser.Parse(code,
+                Characters.Char('a').Optional().Then(Characters.Char('b')).Then(Controls.EndOfFile)
+            );
+
+            Assert.IsTrue(ast.Success);
+        }
     }
 }

@@ -113,6 +113,16 @@ namespace Outrage.TokenParser.Matchers
             return new ManyMatcher(manyMatcher);
         }
 
+        public static IMatcher Once(this IMatcher manyMatcher)
+        {
+            return new ManyMatcher(manyMatcher, 1, 1);
+        }
+
+        public static IMatcher Optional(this IMatcher manyMatcher)
+        {
+            return new ManyMatcher(manyMatcher, 0, 1);
+        }
+
         public static IMatcher Some(this IMatcher manyMatcher, int minimumMatches = 1)
         {
             return new ManyMatcher(manyMatcher, minimumMatches);

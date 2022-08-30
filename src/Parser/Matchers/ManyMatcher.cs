@@ -1,14 +1,18 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Net.Mime;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class ManyMatcher : IMatcher
     {
         private readonly IMatcher many;
         private readonly int minimumMatches;
+        private readonly int maximumMatches;
 
-        public ManyMatcher(IMatcher many, int minimumMatches = 0)
+        public ManyMatcher(IMatcher many, int minimumMatches = 0, int maximumMatches = int.MaxValue)
         {
             this.many = many;
             this.minimumMatches = minimumMatches;
+            this.maximumMatches = maximumMatches;
         }
 
         public Match Matches(Source input)
@@ -22,6 +26,8 @@
                 {
                     if (termMatch.Tokens != null) tokens.AddRange(termMatch.Tokens);
                     matches++;
+                    if (matches >= maximumMatches)
+                        break;
                 }
                 else
                 {
