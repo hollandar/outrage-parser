@@ -31,7 +31,7 @@ namespace Outrage.TokenParser.Matchers
                 }
                 else
                 {
-                    return termMatch;
+                    break;
                 }
 
                 var delimiterMatch = delimiter.Matches(input);
