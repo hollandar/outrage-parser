@@ -7,6 +7,11 @@
             this.Value = value;
         }
 
+        public StringValueToken(string value)
+        {
+            this.Value = value.AsMemory();
+        }
+
         public ReadOnlyMemory<char> Value { get; }
 
         public override string ToString()
