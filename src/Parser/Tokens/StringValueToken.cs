@@ -6,6 +6,10 @@
         {
             this.Value = value;
         }
+        public StringValueToken(string value)
+        {
+            this.Value = value.AsMemory();
+        }
 
         public ReadOnlyMemory<char> Value { get; }
 
