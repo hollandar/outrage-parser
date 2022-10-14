@@ -43,17 +43,21 @@ Parser includes tests to validate the base matching capabilities, there is also 
 
 # Look-Ahead Behaviour
 
-The parser includes look-ahead capability using the Until matcher; in this scenario is slightly less performant; because a series of increasing scope matches are tried until matching is possible.
+The parser includes look-ahead capability using the Until matcher; in this scenario the parser is slightly less performant because a series of increasing scope matches are tried until matching is possible.
 
 For example, to match `(some text)` you could do the following:
 ```
     Characters.AnyChar.Some().SurroundedUntil(Characters.LeftBracket, Characters.RightBracket);
 ```
-This match suucessfully, but performs a series of look ahead matches for the right bracket character.  You can avoid this by excluding the right bracket from the inner match, and use Sourrounded instead.
+This will match sucessfully, but performs a series of look ahead matches for the right bracket character.  You can avoid this by excluding the right bracket from the inner match, and use Sourrounded instead.
 ```
     Characters.AnyChar.Except(Characters.RightBracket).Some().Surrounded(Characters.LeftBracket, Characters.RightBracket);
 ```
 Now we wont use look-ahead and the match will perform significantly faster.
+
+# Change History
+*1.1.3* - It turns out string interpolation is slow, delay it until after all the matching is done to avoid it being performed for every unsuccessful match.
+Instead of using the string `matchResult.Error`, review the result returned by `matchResult.Error()`.
 
 # License
 
