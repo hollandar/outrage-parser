@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class FirstOfMatcher : IMatcher
     {
@@ -9,6 +11,7 @@
             this.matchers = matchers;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             List<Match> matches = new List<Match>();
@@ -23,7 +26,7 @@
                 }
             }
 
-            return new Match ($"{String.Join(" or ", matches.Select(r => r.Error))}.");
+            return new Match (() => $"{String.Join(" or ", matches.Select(r => r.Error()))}.");
         }
     }
 }

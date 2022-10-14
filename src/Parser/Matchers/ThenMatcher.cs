@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class ThenMatcher: IMatcher
     {
@@ -11,6 +13,7 @@
             this.thenMatcher = thenMatcher;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source source)
         {
             var trackingSource = source.Clone();

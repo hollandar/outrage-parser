@@ -1,4 +1,5 @@
 ﻿using System.Net.Mime;
+using System.Runtime.CompilerServices;
 
 namespace Outrage.TokenParser.Matchers
 {
@@ -15,6 +16,7 @@ namespace Outrage.TokenParser.Matchers
             this.maximumMatches = maximumMatches;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             int matches = 0;
@@ -37,7 +39,7 @@ namespace Outrage.TokenParser.Matchers
 
             if (matches < minimumMatches)
             {
-                return new Match($"expected at least {minimumMatches}, found {matches}");
+                return new Match(() => $"expected at least {minimumMatches}, found {matches}");
             }
 
             return new Match (tokens);

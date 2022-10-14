@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class UntilMatcher : IMatcher
     {
@@ -11,6 +13,7 @@
             this.until = until;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             Match? innerMatch = null;
@@ -21,7 +24,7 @@
             do
             {
                 if (untilSource.ReadOnlyMemory.Length == 0)
-                    return new Match("Reached the end of the file matching until.");
+                    return new Match(() => "Reached the end of the file matching until.");
 
                 untilPosition = untilSource.Position;
                 untilMatch = this.until.Matches(untilSource);
@@ -33,7 +36,7 @@
 
                     if (untilPosition != innerSource.Position)
                     {
-                        innerMatch = new Match($"terminator not reached matching until.");
+                        innerMatch = new Match(() => $"terminator not reached matching until.");
                     }
                 }
                 else

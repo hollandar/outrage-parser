@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class CharacterMatcher : IMatcher
     {
@@ -10,7 +12,8 @@
             this.match = match;
             this.tokenize = tokenize;
         }
-
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             if (input.Length >= 1)
@@ -25,10 +28,10 @@
                     return match;
                 }
                 else
-                    return new Match(matchResult.error);
+                    return new Match(() => matchResult.error);
             }
 
-            return new Match("End of input reached.");
+            return new Match(() => "End of input reached.");
         }
     }
 }

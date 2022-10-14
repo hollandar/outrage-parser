@@ -47,7 +47,7 @@ namespace ParserTests
             var ast = TokenParser.Parse(code, Controls.EndOfLine.Then(Controls.EndOfFile));
 
             Assert.IsFalse(ast.Success);
-            Assert.AreEqual("Line 0, Col 0; not enough input to match \\r\\n or not enough input to match \\n.; at ''", ast.Error);
+            Assert.AreEqual("Line 0, Col 0; not enough input to match \\r\\n or not enough input to match \\n.; at ''", ast.Error());
         }
 
         [TestMethod]

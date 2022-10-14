@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class BlockMatcher : IMatcher
     {
@@ -9,6 +11,7 @@
             this.innerMatcher = inner;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             return innerMatcher.Matches(input);

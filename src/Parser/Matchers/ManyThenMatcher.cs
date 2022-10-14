@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class ManyThenMatcher : IMatcher
     {
@@ -13,6 +15,7 @@
             this.minimumMatches = minimumMatches;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             int matches = 0;
@@ -35,14 +38,14 @@
 
                 if (termMatch.Success == false && thenMatch.Success == false)
                 {
-                    return new Match($"expected {termMatch.Error} or {thenMatch.Error}");
+                    return new Match(() => $"expected {termMatch.Error} or {thenMatch.Error}");
                 }
 
             } while (true);
 
             if (matches < minimumMatches)
             {
-                return new Match($"expected at least {minimumMatches}, found {matches}");
+                return new Match(() => $"expected at least {minimumMatches}, found {matches}");
             }
 
             return new Match(tokens);

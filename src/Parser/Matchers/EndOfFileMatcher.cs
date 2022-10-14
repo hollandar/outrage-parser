@@ -1,4 +1,5 @@
 ﻿using Outrage.TokenParser.Tokens;
+using System.Runtime.CompilerServices;
 
 namespace Outrage.TokenParser.Matchers
 {
@@ -8,6 +9,7 @@ namespace Outrage.TokenParser.Matchers
         {
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             if (input.Length == 0)
@@ -15,7 +17,7 @@ namespace Outrage.TokenParser.Matchers
                 return new Match(new EndOfFileToken());
             }
 
-            return new Match("End of file expected.");
+            return new Match(() => "End of file expected.");
         }
     }
 }

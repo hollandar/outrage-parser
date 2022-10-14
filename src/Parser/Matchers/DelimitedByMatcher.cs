@@ -1,4 +1,5 @@
 ﻿using Outrage.TokenParser.Tokens;
+using System.Runtime.CompilerServices;
 
 namespace Outrage.TokenParser.Matchers
 {
@@ -17,6 +18,7 @@ namespace Outrage.TokenParser.Matchers
             this.maxOccurence = maxOccurence;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             int occurrences = 0;
@@ -47,7 +49,7 @@ namespace Outrage.TokenParser.Matchers
             } while (true);
 
             if (occurrences < minOccurence || occurrences > maxOccurence) {
-                return new Match($"expected between {minOccurence} and {maxOccurence}");
+                return new Match(() => $"expected between {minOccurence} and {maxOccurence}");
             }
             return new Match(tokens);
         }

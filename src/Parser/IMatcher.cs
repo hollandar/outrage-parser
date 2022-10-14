@@ -14,7 +14,7 @@
             Tokens = tokens;
         }
 
-        public Match(string error)
+        public Match(Func<string> error)
         {
             Success = false;
             Error = error;
@@ -29,7 +29,7 @@
         public bool Success { get; } = false;
         //public int Length { get; } = 0;
         public IEnumerable<IToken> Tokens { get; } = Enumerable.Empty<IToken>();
-        public string Error { get; } = String.Empty;
+        public Func<string> Error { get; private set; } = () => String.Empty;
     }
 
     public interface IMatcher

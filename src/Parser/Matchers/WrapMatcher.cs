@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class WrapMatcher<TTo> : IMatcher where TTo: IToken
     {
@@ -11,6 +13,7 @@
             this.wrap = wrap;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             var match = inner.Matches(input);

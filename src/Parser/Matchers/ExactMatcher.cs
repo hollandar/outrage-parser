@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class ExactMatcher : IMatcher
     {
@@ -23,6 +25,7 @@
             this.tokenize = tokenize;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             if (input.Length >= match.Length)
@@ -35,10 +38,10 @@
 
                     return match;
                 }
-                return new Match($"{match.ToString()} was expected, got {value.ToString()}.");
+                return new Match(() => $"{match.ToString()} was expected, got {value.ToString()}.");
             }
 
-            return new Match($"not enough input to match {match.ToString().Replace("\r", "\\r").Replace("\n", "\\n")}");
+            return new Match(() => $"not enough input to match {match.ToString().Replace("\r", "\\r").Replace("\n", "\\n")}");
         }
     }
 }

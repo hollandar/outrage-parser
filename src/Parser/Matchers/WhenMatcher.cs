@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class WhenMatcher : IMatcher
     {
@@ -13,6 +15,7 @@
             this.msg = msg;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source source)
         {
             List<IToken> tokens = new();
@@ -23,7 +26,7 @@
                 if (finalMatch) return initialMatch;
                 else
                 {
-                    return new Match($"matched content did not match then when criteria {msg}");
+                    return new Match(() => $"matched content did not match then when criteria {msg}");
                 }
             }
             else

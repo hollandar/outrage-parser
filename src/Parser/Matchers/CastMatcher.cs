@@ -1,4 +1,6 @@
-﻿namespace Outrage.TokenParser.Matchers
+﻿using System.Runtime.CompilerServices;
+
+namespace Outrage.TokenParser.Matchers
 {
     public class CastMatcher<TFrom>: IMatcher where TFrom: IToken
     {
@@ -11,7 +13,7 @@
             this.convert = convert;
         }
 
-
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Match Matches(Source input)
         {
             var match = inner.Matches(input);

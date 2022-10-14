@@ -52,7 +52,7 @@ namespace Calculator
             var match = TokenParser.Parse(expression, Calculation);
             if (!match.Success)
             {
-                throw new Exception(match.Error);
+                throw new Exception(match.Error());
             }
             else
             {
